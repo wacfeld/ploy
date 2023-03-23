@@ -1,11 +1,12 @@
 #include "proc.h"
 #include "sexp.h"
 
-std::map<std::string, Sexp*> bindings;
+std::map<std::string, Sexp*> global_env;
 
+// add binding to global environment
 void bind(std::string name, Sexp *e)
 {
-  bindings[name] = e;
+  global_env[name] = e;
 }
 
 void bind(std::string name, Sexp *(*f)(Sexp *))

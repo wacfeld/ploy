@@ -14,7 +14,7 @@ public:
   Sexp *(*f)(Sexp *);
 };
 
-extern std::map<std::string, Sexp*> bindings;
+extern std::map<std::string, Sexp*> global_env;
 void bind(std::string name, Sexp *e);
 void bind(std::string name, Sexp *(*f)(Sexp *));
 
