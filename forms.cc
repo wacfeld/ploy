@@ -18,10 +18,11 @@ bool is_form(Sexp *e)
   return forms.count(e->a.symb);
 }
 
-void check_length(const std::string &f, Sexp *e, int len)
+void check_length(const std::string &f, Sexp *e, int len, bool ge)
 {
   int ll = list_len(e);
-  if(ll != len) {
+  bool ok = ge ? (ll >= len) : (ll == len);
+  if(!ok) {
     std::cerr << f << " requires " << len << " argument(s); received " << ll << std::endl;
     longjmp(repl_start, 1);
   }
@@ -52,6 +53,10 @@ Sexp *eval_form(Sexp *e)
     }
 
     return a;
+  }
+
+  else if(f == "lambda") {
+    check_length(f, e->cdr, 2);
   }
 
   else if(f == "quote") {
