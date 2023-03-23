@@ -6,13 +6,16 @@
 void defaults()
 {
   // bind("length", list_len);
-  bind("+", add);
   bind("cons", cons);
   bind("car", car);
   bind("cdr", cdr);
   bind("null?", null);
+  
   bind("not", naught);
+  
   bind("=", num_eq);
+  bind("+", add);
+  bind("-", sub);
 }
 
 Sexp *cons(Sexp *args)
@@ -35,7 +38,7 @@ Sexp *car(Sexp *args)
     std::cerr << "car given atom\n";
     longjmp(repl_start, 1);
   }
-  if(a == the_empty_list) {
+  if(isempty(a)) {
     std::cerr << "car given ()\n";
     longjmp(repl_start, 1);
   }
@@ -50,7 +53,7 @@ Sexp *cdr(Sexp *args)
     std::cerr << "cdr given atom\n";
     longjmp(repl_start, 1);
   }
-  if(a == the_empty_list) {
+  if(isempty(a)) {
     std::cerr << "cdr given ()\n";
     longjmp(repl_start, 1);
   }
@@ -62,7 +65,7 @@ Sexp *null(Sexp *args)
   check_length(__func__, args, 1);
   Sexp *a = args->car;
 
-  return make_bool(a == the_empty_list);
+  return make_bool(isempty(a));
 }
 
 // "not" is a C++ keyword
@@ -77,7 +80,7 @@ Sexp *naught(Sexp *args)
 void check_arith_usage(const std::string &name, Sexp *args, int nargs)
 {
   check_length(name, args, nargs);
-  while(args != the_empty_list) {
+  while(!isempty(args)) {
     Sexp *a = args->car;
     if(!isnum(a)) {
       std::cerr << "usage: (" << name;
@@ -91,6 +94,14 @@ void check_arith_usage(const std::string &name, Sexp *args, int nargs)
     args = args->cdr;
   }
 }
+
+// void get_ints(Sexp *args, int nints, std::vector<int> &ret)
+// {
+//   check_arith_usage(__func__, args, nints);
+//   while(!isempty(args)) {
+//     Sexp 
+//   }
+// }
 
 // =
 Sexp *num_eq(Sexp *args)
@@ -118,7 +129,20 @@ Sexp *add(Sexp *args)
   return e;
 }
 
-// Sexp *sub(Sexp *args)
-// {
+Sexp *sub(Sexp *args)
+{
+  check_arith_usage(__func__, args, 2);
   
-// }
+  Sexp *a = args->car;
+  Sexp *b = args->cdr->car;
+  
+  int diff = a->a.num - b->a.num;
+  Sexp *e = new Sexp{true};
+  e->a = Atom{diff};
+  return e;
+}
+
+Sexp *mul(Sexp *args)
+{
+  check_arith_usage(__func__, args, 2);
+}

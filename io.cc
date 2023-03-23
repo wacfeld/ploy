@@ -40,7 +40,7 @@ void flat_sexp(std::ostream &out, Sexp *e, bool open)
     }
   }
 
-  else if(e == the_empty_list) {
+  else if(isempty(e)) {
     if(open) {
       out << "(";
     }
@@ -63,7 +63,7 @@ void put_sexp(std::ostream &out, Sexp *e, int indent)
     out << ' ';
   }
   
-  if(e == the_empty_list) {
+  if(isempty(e)) {
     out << "[/]" << std::endl;
   }
 

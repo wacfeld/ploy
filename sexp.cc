@@ -22,6 +22,11 @@ Sexp *index(Sexp *e, int i)
   return index(e->cdr, i-1);
 }
 
+bool isempty(Sexp *e)
+{
+  return (isempty(e));
+}
+
 // get length of list
 int list_len(Sexp *e)
 {
@@ -31,7 +36,7 @@ int list_len(Sexp *e)
     longjmp(repl_start, 1);
   }
   
-  else if(e == the_empty_list) {
+  else if(isempty(e)) {
     return 0;
   }
   
@@ -94,7 +99,7 @@ Sexp *eval(Sexp *e)
     }
   }
 
-  else if(e == the_empty_list) {
+  else if(isempty(e)) {
     return e;
   }
 
@@ -128,7 +133,7 @@ Sexp *eval_list(Sexp *e)
     std::cerr << "eval_list(): asked to evaluate non-list\n";
   }
 
-  if(e == the_empty_list) {
+  if(isempty(e)) {
     return e;
   }
   
