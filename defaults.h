@@ -12,6 +12,7 @@ Sexp *cons(Sexp *args);
 Sexp *car(Sexp *args);
 Sexp *cdr(Sexp *args);
 Sexp *null(Sexp *args);
+Sexp *naught(Sexp *args);
 Sexp *add(Sexp *args);
 
 #endif

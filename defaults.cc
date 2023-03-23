@@ -11,6 +11,7 @@ void defaults()
   bind("car", car);
   bind("cdr", cdr);
   bind("null?", null);
+  bind("not", naught);
 }
 
 bool isnum(Sexp *e)
@@ -66,6 +67,15 @@ Sexp *null(Sexp *args)
   Sexp *a = args->car;
 
   return make_bool(a == the_empty_list);
+}
+
+// "not" is a C++ keyword
+Sexp *naught(Sexp *args)
+{
+  check_length(__func__, args, 1);
+  Sexp *a = args->car;
+  bool truth = !eval_truth(a);
+  return make_bool(truth);
 }
 
 Sexp *add(Sexp *args)
