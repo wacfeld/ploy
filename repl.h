@@ -5,6 +5,7 @@
 
 extern jmp_buf repl_start;
 
+void reset_repl(std::string msg);
 void repl();
 
 #endif

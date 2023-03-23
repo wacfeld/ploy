@@ -8,6 +8,12 @@
 
 jmp_buf repl_start;
 
+void reset_repl(std::string msg)
+{
+  std::cerr << msg << std::endl;
+  longjmp(repl_start, 1);
+}
+
 void repl()
 {
   setjmp(repl_start);
