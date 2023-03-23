@@ -28,7 +28,7 @@ void check_length(const std::string &f, Sexp *e, int len, bool ge)
   }
 }
 
-Sexp *eval_form(Sexp *e)
+Sexp *eval_form(Sexp *e, std::map<std::string,Sexp*> env)
 {
   std::string &f = e->car->a.symb;
 
@@ -39,7 +39,7 @@ Sexp *eval_form(Sexp *e)
     
     if(a->atom) {
       if(a->a.type == SYMBOL) {
-        b = eval(b);
+        b = eval(b, env);
         bind(a->a.symb, b);
       }
 
@@ -57,7 +57,15 @@ Sexp *eval_form(Sexp *e)
 
   // else if(f == "lambda") {
   //   check_length(f, e->cdr, 2);
+  //   Sexp *formals = e->cdr->car;
+  //   Sexp *body = e->cdr->cdr->car; // TODO allow multiple body expressions
     
+  //   if(islist(formals)) {
+      
+  //   }
+  //   else {
+  //     reset_repl("non-list formals not supported yet");
+  //   }
   // }
 
   else if(f == "quote") {
@@ -71,17 +79,17 @@ Sexp *eval_form(Sexp *e)
 
     // evaluate condition
     Sexp *args = e->cdr;
-    Sexp *cond = eval(index(args, 1));
+    Sexp *cond = eval(index(args, 1), env);
     bool truth = eval_truth(cond);
     
     // evaluate first branch
     if(truth) {
-      return eval(index(args, 2));
+      return eval(index(args, 2), env);
     }
 
     // evaluate second branch
     else {
-      return eval(index(args, 3));
+      return eval(index(args, 3), env);
     }
   }
 

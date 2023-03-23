@@ -56,8 +56,9 @@ bool isnum(Sexp *e);
 Sexp *make_bool(bool truth);
 Sexp *make_num(int n);
 bool eval_truth(Sexp *e);
-Sexp *eval(Sexp *e);
-Sexp *eval_list(Sexp *e);
+// Sexp *eval(Sexp *e);
+Sexp *eval(Sexp *e, std::map<std::string, Sexp*> env);
+Sexp *eval_list(Sexp *e, std::map<std::string, Sexp*>);
 
 extern Sexp *the_empty_list;
   

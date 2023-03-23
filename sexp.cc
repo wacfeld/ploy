@@ -94,7 +94,11 @@ bool eval_truth(Sexp *e)
   return e->a.boole;
 }
 
-Sexp *eval(Sexp *e)
+// Sexp *eval(Sexp *e) {
+//   return eval(e, {});
+// }
+
+Sexp *eval(Sexp *e, std::map<std::string, Sexp*> env)
 {
   // atom
   if(e->atom) {
@@ -124,13 +128,13 @@ Sexp *eval(Sexp *e)
 
   // syntactic form
   else if(is_form(e->car)) {
-    return eval_form(e);
+    return eval_form(e, env);
   }
 
   // procedure call
   else {
     // evaluate car (should evaluate to procedure)
-    Sexp *car = eval(e->car);
+    Sexp *car = eval(e->car, env);
     if(!isproc(car)) {
       std::cerr << "car of procedure call is not procedure\n";
       // exit(1);
@@ -138,7 +142,7 @@ Sexp *eval(Sexp *e)
     }
 
     // evaluate arguments
-    Sexp *cdr = eval_list(e->cdr);
+    Sexp *cdr = eval_list(e->cdr, env);
 
     // call procedure
     return call(car->a.proc, cdr);
@@ -146,7 +150,7 @@ Sexp *eval(Sexp *e)
 }
 
 // evaluate every element in list and return the new list
-Sexp *eval_list(Sexp *e)
+Sexp *eval_list(Sexp *e, std::map<std::string, Sexp*> env)
 {
   if(e->atom) {
     std::cerr << "eval_list(): asked to evaluate non-list\n";
@@ -157,8 +161,8 @@ Sexp *eval_list(Sexp *e)
   }
   
   Sexp *newe = new Sexp{false};
-  newe->car = eval(e->car);
-  newe->cdr = eval_list(e->cdr);
+  newe->car = eval(e->car, env);
+  newe->cdr = eval_list(e->cdr, env);
 
   return newe;
 }

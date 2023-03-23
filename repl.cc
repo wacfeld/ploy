@@ -32,7 +32,7 @@ void repl()
 
     toks = expand_quote(toks);
     Sexp *e = get_sexp(toks);
-    Sexp *f = eval(e);
+    Sexp *f = eval(e, {});
     std::cout << *f << std::endl;
   }
 }
