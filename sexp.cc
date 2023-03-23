@@ -110,7 +110,11 @@ Sexp *eval(Sexp *e, std::map<std::string, Sexp*> env)
     else {
       // lookup in bindings
       std::string &name = e->a.symb;
-      if(bindings.count(name)) {
+      // check local env first, then global
+      if(env.count(name)) {
+        return env[name];
+      }
+      else if(bindings.count(name)) {
         return bindings[name];
       }
       
