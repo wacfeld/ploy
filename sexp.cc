@@ -40,6 +40,19 @@ int list_len(Sexp *e)
   }
 }
 
+Sexp *make_bool(bool truth)
+{
+  Sexp *e = new Sexp{true};
+  e->a.type = BOOLEAN;
+  if(truth) {
+    e->a.boole = true;
+  } else {
+    e->a.boole = false;
+  }
+
+  return e;
+}
+
 // everything except #f is true
 bool eval_truth(Sexp *e)
 {

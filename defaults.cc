@@ -64,14 +64,8 @@ Sexp *null(Sexp *args)
 {
   check_length(__func__, args, 1);
   Sexp *a = args->car;
-  Sexp *e = new Sexp{true};
-  e->a.type = BOOLEAN;
-  if(a == the_empty_list) {
-    e->a.boole = true;
-  } else {
-    e->a.boole = false;
-  }
-  return e;
+
+  return make_bool(a == the_empty_list);
 }
 
 Sexp *add(Sexp *args)
