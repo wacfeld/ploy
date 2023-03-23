@@ -55,9 +55,10 @@ Sexp *eval_form(Sexp *e)
     return a;
   }
 
-  else if(f == "lambda") {
-    check_length(f, e->cdr, 2);
-  }
+  // else if(f == "lambda") {
+  //   check_length(f, e->cdr, 2);
+    
+  // }
 
   else if(f == "quote") {
     check_length(f, e->cdr, 1);

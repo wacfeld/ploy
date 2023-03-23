@@ -22,6 +22,18 @@ Sexp *index(Sexp *e, int i)
   return index(e->cdr, i-1);
 }
 
+bool islist(Sexp *e)
+{
+  while(!isempty(e)) {
+    if(e->atom) {
+      return false;
+    }
+    e = e->cdr;
+  }
+
+  return true;
+}
+
 bool isempty(Sexp *e)
 {
   return (e == the_empty_list);
