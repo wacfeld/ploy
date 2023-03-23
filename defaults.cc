@@ -16,6 +16,7 @@ void defaults()
   bind("=", num_eq);
   bind("+", add);
   bind("-", sub);
+  bind("*", mul);
 }
 
 Sexp *cons(Sexp *args)
