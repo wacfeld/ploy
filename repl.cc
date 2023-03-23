@@ -14,6 +14,11 @@ void reset_repl(std::string msg)
   longjmp(repl_start, 1);
 }
 
+void reset_repl()
+{
+  longjmp(repl_start, 1);
+}
+
 void repl()
 {
   setjmp(repl_start);

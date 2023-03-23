@@ -74,16 +74,30 @@ Sexp *naught(Sexp *args)
   return make_bool(truth);
 }
 
+void check_arith_usage(const std::string &name, Sexp *args, int nargs)
+{
+  check_length(name, args, nargs);
+  while(args != the_empty_list) {
+    Sexp *a = args->car;
+    if(!isnum(a)) {
+      std::cerr << "usage: (" << name;
+      for(int i = 0; i < nargs; i++) {
+        std::cerr << " NUM";
+      }
+      std::cerr << ")" << std::endl;
+      reset_repl();
+    }
+    
+    args = args->cdr;
+  }
+}
+
 // =
 Sexp *num_eq(Sexp *args)
 {
-  check_length(__func__, args, 2);
+  check_arith_usage(__func__, args, 2);
   Sexp *a = args->car;
   Sexp *b = args->cdr->car;
-  if(!isnum(a) || !isnum(b)) {
-    std::cerr << "usage: (= NUM NUM)\n";
-    longjmp(repl_start, 1);
-  }
 
   bool truth = (a->a.num == b->a.num);
   return make_bool(truth);
@@ -91,21 +105,10 @@ Sexp *num_eq(Sexp *args)
 
 Sexp *add(Sexp *args)
 {
-  static std::string usage = "usage: (add NUM NUM)";
-  // if(list_len(args) != 2) {
-  //   std::cerr << usage << std::endl;
-  //   // exit(1);
-  //   longjmp(repl_start, 1);
-  // }
-  check_length(__func__, args, 2);
+  check_arith_usage(__func__, args, 2);
 
   Sexp *a = args->car;
   Sexp *b = args->cdr->car;
-
-  if(!isnum(a) || !isnum(b)) {
-    std::cerr << usage << std::endl;
-    longjmp(repl_start, 1);
-  }
 
   int sum = a->a.num + b->a.num;
   Sexp *e = new Sexp{true};
@@ -114,3 +117,8 @@ Sexp *add(Sexp *args)
   
   return e;
 }
+
+// Sexp *sub(Sexp *args)
+// {
+  
+// }
