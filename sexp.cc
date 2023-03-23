@@ -22,6 +22,15 @@ Sexp *index(Sexp *e, int i)
   return index(e->cdr, i-1);
 }
 
+bool issymbol(Sexp *e)
+{
+  if(!e->atom) {
+    return false;
+  }
+
+  return e->a.type == SYMBOL;
+}
+
 bool islist(Sexp *e)
 {
   while(!isempty(e)) {

@@ -14,6 +14,7 @@ public:
   bool prim;
   Sexp *(*f)(Sexp *);
   std::vector<std::string> formals; // TODO allow other types of formals
+  Sexp *body;
 };
 
 extern std::map<std::string, Sexp*> global_env;
@@ -22,6 +23,6 @@ void bind(std::string name, Sexp *(*f)(Sexp *));
 
 bool isproc(Sexp *e);
 
-Sexp *call(Proc proc, Sexp *args);
+Sexp *call(const Proc &proc, Sexp *args);
 
 #endif

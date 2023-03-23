@@ -50,6 +50,7 @@ Sexp *get_list(std::vector<Token> toks);
 Sexp *index(Sexp *e, int i);
 bool isempty(Sexp *e);
 bool islist(Sexp *e);
+bool issymbol(Sexp *e);
 int list_len(Sexp *e);
 bool isnum(Sexp *e);
 

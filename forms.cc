@@ -59,9 +59,24 @@ Sexp *eval_form(Sexp *e, std::map<std::string,Sexp*> env)
     check_length(f, e->cdr, 2);
     Sexp *formals = e->cdr->car;
     Sexp *body = e->cdr->cdr->car; // TODO allow multiple body expressions
+
+    Sexp *L = new Sexp{true};
+    L->a.type = PROCEDURE;
+    L->a.proc.prim = false;
     
     if(islist(formals)) {
-      
+      // write formals into L->a.proc.formals
+      for(Sexp *it = formals; !isempty(it); it = it->cdr) {
+        Sexp *f = it->car;
+        if(!issymbol(f)) {
+          reset_repl("formals list contains non-symbol");
+        }
+
+        L->a.proc.formals.push_back(f->a.symb);
+      }
+
+      L->a.proc.body = body;
+      return L;
     }
     else {
       reset_repl("non-list formals not supported yet");
