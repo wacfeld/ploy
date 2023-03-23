@@ -10,6 +10,7 @@ void defaults()
   bind("cons", cons);
   bind("car", car);
   bind("cdr", cdr);
+  bind("null?", null);
 }
 
 bool isnum(Sexp *e)
@@ -38,7 +39,7 @@ Sexp *car(Sexp *args)
     longjmp(repl_start, 1);
   }
   if(a == the_empty_list) {
-    std::cerr << "cannot take car on ()\n";
+    std::cerr << "car given ()\n";
     longjmp(repl_start, 1);
   }
   return a->car;
@@ -53,10 +54,24 @@ Sexp *cdr(Sexp *args)
     longjmp(repl_start, 1);
   }
   if(a == the_empty_list) {
-    std::cerr << "cannot take cdr on ()\n";
+    std::cerr << "cdr given ()\n";
     longjmp(repl_start, 1);
   }
   return a->cdr;
+}
+
+Sexp *null(Sexp *args)
+{
+  check_length(__func__, args, 1);
+  Sexp *a = args->car;
+  Sexp *e = new Sexp{true};
+  e->a.type = BOOLEAN;
+  if(a == the_empty_list) {
+    e->a.boole = true;
+  } else {
+    e->a.boole = false;
+  }
+  return e;
 }
 
 Sexp *add(Sexp *args)
