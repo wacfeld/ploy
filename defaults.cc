@@ -12,11 +12,7 @@ void defaults()
   bind("cdr", cdr);
   bind("null?", null);
   bind("not", naught);
-}
-
-bool isnum(Sexp *e)
-{
-  return e->atom && (e->a.type == NUMBER);
+  bind("=", num_eq);
 }
 
 Sexp *cons(Sexp *args)
@@ -75,6 +71,21 @@ Sexp *naught(Sexp *args)
   check_length(__func__, args, 1);
   Sexp *a = args->car;
   bool truth = !eval_truth(a);
+  return make_bool(truth);
+}
+
+// =
+Sexp *num_eq(Sexp *args)
+{
+  check_length(__func__, args, 2);
+  Sexp *a = args->car;
+  Sexp *b = args->cdr->car;
+  if(!isnum(a) || !isnum(b)) {
+    std::cerr << "usage: (= NUM NUM)\n";
+    longjmp(repl_start, 1);
+  }
+
+  bool truth = (a->a.num == b->a.num);
   return make_bool(truth);
 }
 

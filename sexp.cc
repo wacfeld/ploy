@@ -40,6 +40,11 @@ int list_len(Sexp *e)
   }
 }
 
+bool isnum(Sexp *e)
+{
+  return e->atom && (e->a.type == NUMBER);
+}
+
 Sexp *make_bool(bool truth)
 {
   Sexp *e = new Sexp{true};

@@ -49,6 +49,7 @@ Sexp *get_list(std::vector<Token> toks);
 
 Sexp *index(Sexp *e, int i);
 int list_len(Sexp *e);
+bool isnum(Sexp *e);
 
 Sexp *make_bool(bool truth);
 bool eval_truth(Sexp *e);

@@ -7,12 +7,14 @@
 // int list_len(Sexp *e);
 
 void defaults();
-bool isnum(Sexp *e);
+
 Sexp *cons(Sexp *args);
 Sexp *car(Sexp *args);
 Sexp *cdr(Sexp *args);
 Sexp *null(Sexp *args);
+
 Sexp *naught(Sexp *args);
+Sexp *num_eq(Sexp *args);
 Sexp *add(Sexp *args);
 
 #endif
