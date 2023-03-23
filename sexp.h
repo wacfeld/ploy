@@ -53,6 +53,7 @@ int list_len(Sexp *e);
 bool isnum(Sexp *e);
 
 Sexp *make_bool(bool truth);
+Sexp *make_num(int n);
 bool eval_truth(Sexp *e);
 Sexp *eval(Sexp *e);
 Sexp *eval_list(Sexp *e);

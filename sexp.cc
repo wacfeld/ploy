@@ -24,7 +24,7 @@ Sexp *index(Sexp *e, int i)
 
 bool isempty(Sexp *e)
 {
-  return (isempty(e));
+  return (e == the_empty_list);
 }
 
 // get length of list
@@ -48,6 +48,13 @@ int list_len(Sexp *e)
 bool isnum(Sexp *e)
 {
   return e->atom && (e->a.type == NUMBER);
+}
+
+Sexp *make_num(int n)
+{
+  Sexp *e = new Sexp{true};
+  e->a = Atom{n};
+  return e;
 }
 
 Sexp *make_bool(bool truth)

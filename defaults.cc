@@ -95,54 +95,44 @@ void check_arith_usage(const std::string &name, Sexp *args, int nargs)
   }
 }
 
-// void get_ints(Sexp *args, int nints, std::vector<int> &ret)
-// {
-//   check_arith_usage(__func__, args, nints);
-//   while(!isempty(args)) {
-//     Sexp 
-//   }
-// }
+std::vector<int> get_ints(Sexp *args, int nints)
+{
+  std::vector<int> ret;
+  while(!isempty(args)) {
+    Sexp *a = args->car;
+    ret.push_back(a->a.num);
+    args = args->cdr;
+  }
+
+  return ret;
+}
 
 // =
 Sexp *num_eq(Sexp *args)
 {
   check_arith_usage(__func__, args, 2);
-  Sexp *a = args->car;
-  Sexp *b = args->cdr->car;
-
-  bool truth = (a->a.num == b->a.num);
+  std::vector<int> ints = get_ints(args, 2);
+  bool truth = (ints[0] == ints[1]);
   return make_bool(truth);
 }
 
 Sexp *add(Sexp *args)
 {
   check_arith_usage(__func__, args, 2);
-
-  Sexp *a = args->car;
-  Sexp *b = args->cdr->car;
-
-  int sum = a->a.num + b->a.num;
-  Sexp *e = new Sexp{true};
-  e->a.type = NUMBER;
-  e->a.num = sum;
-  
-  return e;
+  std::vector<int> ints = get_ints(args, 2);
+  return make_num(ints[0]+ints[1]);
 }
 
 Sexp *sub(Sexp *args)
 {
   check_arith_usage(__func__, args, 2);
-  
-  Sexp *a = args->car;
-  Sexp *b = args->cdr->car;
-  
-  int diff = a->a.num - b->a.num;
-  Sexp *e = new Sexp{true};
-  e->a = Atom{diff};
-  return e;
+  std::vector<int> ints = get_ints(args, 2);
+  return make_num(ints[0]-ints[1]);
 }
 
 Sexp *mul(Sexp *args)
 {
   check_arith_usage(__func__, args, 2);
+  std::vector<int> ints = get_ints(args, 2);
+  return make_num(ints[0]*ints[1]);
 }
