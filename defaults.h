@@ -19,5 +19,7 @@ void check_arith_usage(const std::string &name, Sexp *args, int nargs);
 Sexp *num_eq(Sexp *args);
 Sexp *add(Sexp *args);
 Sexp *sub(Sexp *args);
+Sexp *mul(Sexp *args);
+Sexp *div(Sexp *args);
 
 #endif

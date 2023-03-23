@@ -17,6 +17,7 @@ void defaults()
   bind("+", add);
   bind("-", sub);
   bind("*", mul);
+  bind("/", div);
 }
 
 Sexp *cons(Sexp *args)
@@ -136,4 +137,14 @@ Sexp *mul(Sexp *args)
   check_arith_usage(__func__, args, 2);
   std::vector<int> ints = get_ints(args, 2);
   return make_num(ints[0]*ints[1]);
+}
+
+Sexp *div(Sexp *args)
+{
+  check_arith_usage(__func__, args, 2);
+  std::vector<int> ints = get_ints(args, 2);
+  if(ints[1] == 0) {
+    reset_repl("division by zero");
+  }
+  return make_num(ints[0]/ints[1]);
 }
