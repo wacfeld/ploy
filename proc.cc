@@ -25,7 +25,7 @@ bool isproc(Sexp *e)
 }
 
 // call procedure proc on list of arguments args
-Sexp *call(Proc proc, Sexp *args)
+Sexp *call(const Proc &proc, Sexp *args)
 {
   // primitive procedure call
   if(proc.prim) {

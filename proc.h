@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include "repl.h"
 
@@ -12,6 +13,7 @@ class Proc {
 public:
   bool prim;
   Sexp *(*f)(Sexp *);
+  std::vector<std::string> formals; // TODO allow other types of formals
 };
 
 extern std::map<std::string, Sexp*> global_env;

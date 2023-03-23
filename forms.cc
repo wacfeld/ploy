@@ -55,18 +55,18 @@ Sexp *eval_form(Sexp *e, std::map<std::string,Sexp*> env)
     return a;
   }
 
-  // else if(f == "lambda") {
-  //   check_length(f, e->cdr, 2);
-  //   Sexp *formals = e->cdr->car;
-  //   Sexp *body = e->cdr->cdr->car; // TODO allow multiple body expressions
+  else if(f == "lambda") {
+    check_length(f, e->cdr, 2);
+    Sexp *formals = e->cdr->car;
+    Sexp *body = e->cdr->cdr->car; // TODO allow multiple body expressions
     
-  //   if(islist(formals)) {
+    if(islist(formals)) {
       
-  //   }
-  //   else {
-  //     reset_repl("non-list formals not supported yet");
-  //   }
-  // }
+    }
+    else {
+      reset_repl("non-list formals not supported yet");
+    }
+  }
 
   else if(f == "quote") {
     check_length(f, e->cdr, 1);
