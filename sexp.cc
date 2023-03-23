@@ -99,7 +99,7 @@ Sexp *eval(Sexp *e)
       }
       
       else {
-        std::cerr << "name '" << name << "' has no binding\n";
+        std::cerr << "name '" << name << "' not defined\n";
         // exit(1);
         longjmp(repl_start, 1);
       }

@@ -10,6 +10,7 @@ void defaults()
   bind("car", car);
   bind("cdr", cdr);
   bind("null?", null);
+  bind("length", length);
   
   bind("not", naught);
   
@@ -68,6 +69,13 @@ Sexp *null(Sexp *args)
   Sexp *a = args->car;
 
   return make_bool(isempty(a));
+}
+
+Sexp *length(Sexp *args)
+{
+  check_length(__func__, args, 1);
+  Sexp *a = args->car;
+  return make_num(list_len(a));
 }
 
 // "not" is a C++ keyword
