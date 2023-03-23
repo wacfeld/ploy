@@ -3,7 +3,7 @@
 
 // syntactic forms are quote, if, begin, cond, etc.
 std::set<std::string> forms {
-  "quote", "if",
+  "quote", "if", "define",
 };
 
 // true if e is syntactic form
@@ -31,7 +31,30 @@ Sexp *eval_form(Sexp *e)
 {
   std::string &f = e->car->a.symb;
 
-  if(f == "quote") {
+  if(f == "define") {
+    check_length(f, e->cdr, 2);
+    Sexp *a = e->cdr->car;
+    Sexp *b = e->cdr->cdr->car;
+    
+    if(a->atom) {
+      if(a->a.type == SYMBOL) {
+        b = eval(b);
+        bind(a->a.symb, b);
+      }
+
+      else {
+        reset_repl("cannot define non-symbol");
+      }
+    }
+
+    else {
+      reset_repl("function definitions not supported yet");
+    }
+
+    return a;
+  }
+
+  else if(f == "quote") {
     check_length(f, e->cdr, 1);
 
     return index(e, 2);
