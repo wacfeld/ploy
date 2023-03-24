@@ -3,9 +3,15 @@
 std::ostream &operator<<(std::ostream &out, Proc &p)
 {
   if(p.prim) {
-    out << p.f;
+    // out << p.f;
+    out << "[builtin ";
+    printf("%p", p.f);
+    out << "]";
   } else {
-    std::cerr << "non-primitive procedure operator<< not supported\n";
+    // std::cerr << "non-primitive procedure operator<< not supported\n";
+    out << "[compound ";
+    printf("%p", p.body);
+    out << "]";
   }
 
   return out;
@@ -20,9 +26,10 @@ std::ostream &operator<<(std::ostream &out, Atom &a)
   } else if(a.type == BOOLEAN) {
     out << (a.boole ? "#t" : "#f");
   } else if(a.type == PROCEDURE) {
-    out << "[proc ";
-    printf("%p", a.proc.f);
-    out << "]";
+    // out << "[proc ";
+    // printf("%p", a.proc.f);
+    // out << "]";
+    out << a.proc;
   }
 
   return out;
