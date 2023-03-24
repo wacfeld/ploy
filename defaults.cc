@@ -113,7 +113,24 @@ void check_arith_usage(const std::string &name, Sexp *args, int nargs)
   }
 }
 
-std::vector<int> get_ints(Sexp *args, int nints)
+bool all_nums(Sexp *args)
+{
+  if(!islist(args)) {
+    reset_repl("allnums(): passed non-list");
+  }
+
+  while(!isempty(args)) {
+    Sexp *a = args->car;
+    if(!isnum(a)) {
+      return false;
+    }
+    args = args->cdr;
+  }
+
+  return true;
+}
+
+std::vector<int> get_ints(Sexp *args)
 {
   std::vector<int> ret;
   while(!isempty(args)) {
@@ -128,37 +145,48 @@ std::vector<int> get_ints(Sexp *args, int nints)
 // =
 Sexp *num_eq(Sexp *args)
 {
-  check_arith_usage(__func__, args, 2);
-  std::vector<int> ints = get_ints(args, 2);
-  bool truth = (ints[0] == ints[1]);
-  return make_bool(truth);
+  // check_arith_usage(__func__, args, 2);
+  if(!all_nums(args)) {
+    reset_repl(std::string{__func__} + std::string{" passed non-numbers"});
+  }
+  std::vector<int> ints = get_ints(args);
+  bool eq = true;
+  if(!ints.empty()) {
+    for(int n : ints) {
+      if(n != ints[0]) {
+        eq = false;
+        break;
+      }
+    }
+  }
+  return make_bool(eq);
 }
 
 Sexp *add(Sexp *args)
 {
   check_arith_usage(__func__, args, 2);
-  std::vector<int> ints = get_ints(args, 2);
+  std::vector<int> ints = get_ints(args);
   return make_num(ints[0]+ints[1]);
 }
 
 Sexp *sub(Sexp *args)
 {
   check_arith_usage(__func__, args, 2);
-  std::vector<int> ints = get_ints(args, 2);
+  std::vector<int> ints = get_ints(args);
   return make_num(ints[0]-ints[1]);
 }
 
 Sexp *mul(Sexp *args)
 {
   check_arith_usage(__func__, args, 2);
-  std::vector<int> ints = get_ints(args, 2);
+  std::vector<int> ints = get_ints(args);
   return make_num(ints[0]*ints[1]);
 }
 
 Sexp *div(Sexp *args)
 {
   check_arith_usage(__func__, args, 2);
-  std::vector<int> ints = get_ints(args, 2);
+  std::vector<int> ints = get_ints(args);
   if(ints[1] == 0) {
     reset_repl("division by zero");
   }
