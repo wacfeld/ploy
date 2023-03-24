@@ -32,9 +32,12 @@ Sexp *call(const Proc &proc, Sexp *args)
     return (proc.f)(args);
   }
 
+  // compound procedure call
   else {
-    std::cerr << "non-primitive procedure call hasn't been implemented\n";
+    // std::cerr << "non-primitive procedure call hasn't been implemented\n";
     // exit(1);
-    longjmp(repl_start, 1);
+    // longjmp(repl_start, 1);
+
+    
   }
 }

@@ -13,7 +13,8 @@ class Proc {
 public:
   bool prim;
   Sexp *(*f)(Sexp *);
-  std::vector<std::string> formals; // TODO allow other types of formals
+  // std::vector<std::string> formals; // TODO allow other types of formals
+  Sexp *formals;
   std::map<std::string, Sexp*> env;
   Sexp *body;
 };

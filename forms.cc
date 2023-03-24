@@ -63,24 +63,31 @@ Sexp *eval_form(Sexp *e, std::map<std::string,Sexp*> env)
     Sexp *L = new Sexp{true};
     L->a.type = PROCEDURE;
     L->a.proc.prim = false;
+    L->a.proc.formals = formals;
+    // a formal is one of:
+    // - a symbol
+    // - the empty list
+    // - a pair of symbol and formal
+    // e.x. (), (a), (a b), a, (a . b), (a b . c) are all formals
     
-    if(islist(formals)) {
-      // write formals into L->a.proc.formals
-      for(Sexp *it = formals; !isempty(it); it = it->cdr) {
-        Sexp *f = it->car;
-        if(!issymbol(f)) {
-          reset_repl("formals list contains non-symbol");
-        }
+    L->a.proc.env = env; // copy current local env
+    L->a.proc.body = body;
+    
+    // if(islist(formals)) {
+    //   // write formals into L->a.proc.formals
+    //   for(Sexp *it = formals; !isempty(it); it = it->cdr) {
+    //     Sexp *f = it->car;
+    //     if(!issymbol(f)) {
+    //       reset_repl("formals list contains non-symbol");
+    //     }
 
-        L->a.proc.formals.push_back(f->a.symb);
-      }
-
-      L->a.proc.env = env; // copy current local env
-      L->a.proc.body = body;
-    }
-    else {
-      reset_repl("non-list formals not supported yet");
-    }
+    //     L->a.proc.formals.push_back(f->a.symb);
+    //   }
+    // }
+    // else {
+    //   reset_repl("non-list formals not supported yet");
+    // }
+    
     return L;
   }
 
