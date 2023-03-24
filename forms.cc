@@ -33,23 +33,40 @@ Sexp *eval_form(Sexp *e, const std::map<std::string,Sexp*> &env)
   std::string &f = e->car->a.symb;
 
   if(f == "define") {
-    check_length(f, e->cdr, 2);
-    Sexp *a = e->cdr->car;
-    Sexp *b = e->cdr->cdr->car;
-    
-    if(a->atom) {
-      if(a->a.type == SYMBOL) {
-        b = eval(b, env);
-        bind(a->a.symb, b);
+    // check_length(f, e->cdr, 2);
+    Sexp *args = e->cdr;
+    int nargs = list_len(args);
+
+    Sexp *a = args->car;
+    // undefine something
+    if(nargs == 1) {
+      if(!issymbol(a)) {
+        reset_repl(std::string{f} + std::string{" asked to undefine non-symbol"});
+      }
+
+      unbind(a->a.symb);
+    }
+
+    // define something
+    else if(nargs == 2) {
+      Sexp *b = args->cdr->car;
+
+      if(a->atom) {
+        if(a->a.type == SYMBOL) {
+          b = eval(b, env);
+          bind(a->a.symb, b);
+        }
+
+        else {
+          reset_repl("cannot define non-symbol");
+        }
       }
 
       else {
-        reset_repl("cannot define non-symbol");
+        reset_repl("direct function definitions not supported yet");
       }
-    }
-
-    else {
-      reset_repl("function definitions not supported yet");
+    } else {
+      reset_repl(std::string{f} + std::string{" requires 1 or 2 arguments"});
     }
 
     return a;

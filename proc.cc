@@ -4,12 +4,12 @@
 std::map<std::string, Sexp*> global_env;
 
 // add binding to global environment
-void bind(std::string name, Sexp *e)
+void bind(const std::string &name, Sexp *e)
 {
   global_env[name] = e;
 }
 
-void bind(std::string name, Sexp *(*f)(Sexp *))
+void bind(const std::string &name, Sexp *(*f)(Sexp *))
 {
   Sexp *e = new Sexp{true};
   e->a.type = PROCEDURE;
@@ -17,6 +17,11 @@ void bind(std::string name, Sexp *(*f)(Sexp *))
   e->a.proc.f = f;
 
   bind(name, e);
+}
+
+void unbind(const std::string &name)
+{
+  global_env.erase(name);
 }
 
 bool isproc(Sexp *e)

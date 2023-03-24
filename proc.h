@@ -20,8 +20,9 @@ public:
 };
 
 extern std::map<std::string, Sexp*> global_env;
-void bind(std::string name, Sexp *e);
-void bind(std::string name, Sexp *(*f)(Sexp *));
+void bind(const std::string &name, Sexp *e);
+void bind(const std::string &name, Sexp *(*f)(Sexp *));
+void unbind(const std::string &name);
 
 bool isproc(Sexp *e);
 
