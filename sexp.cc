@@ -9,6 +9,13 @@ typedef unsigned long ulong;
 // gets initialized in main
 Sexp *the_empty_list;
 
+std::vector<Sexp*> allocated;
+void cleanup()
+{
+  for(Sexp *s : allocated) {
+    delete s;
+  }
+}
 
 Sexp *index(Sexp *e, int i)
 {

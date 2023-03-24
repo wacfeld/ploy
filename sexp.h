@@ -27,6 +27,9 @@ public:
   Atom(bool b): type{BOOLEAN}, boole{b} {}
 };
 
+extern std::vector<Sexp*> allocated;
+void cleanup();
+
 class Sexp {
 public:
   bool atom;
@@ -35,14 +38,13 @@ public:
   Sexp *car;
   Sexp *cdr;
 
-  Sexp(bool atom): atom{atom}, car{nullptr}, cdr{nullptr} {}
+  Sexp(bool atom): atom{atom}, car{nullptr}, cdr{nullptr} {allocated.push_back(this);}
 
   ~Sexp() {
     delete car;
     delete cdr;
   }
 };
-
 
 Sexp *get_sexp(std::vector<Token> toks);
 Sexp *get_list(std::vector<Token> toks);
