@@ -12,7 +12,7 @@ void defaults()
   bind("car", car);
   bind("cdr", cdr);
   bind("null?", null);
-  bind("list?", list);
+  bind("list?", listp);
   bind("length", length);
   
   bind("not", naught);
@@ -66,7 +66,7 @@ Sexp *cdr(Sexp *args)
   return a->cdr;
 }
 
-Sexp *list(Sexp *args)
+Sexp *listp(Sexp *args)
 {
   check_length(__func__, args, 1);
   Sexp *e = args->car;
