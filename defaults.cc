@@ -188,17 +188,36 @@ Sexp *sub(Sexp *args)
 
 Sexp *mul(Sexp *args)
 {
-  check_arith_usage(__func__, args, 2);
+  check_arith_usage(__func__, args);
   std::vector<int> ints = get_ints(args);
-  return make_num(ints[0]*ints[1]);
+  int prod = 1;
+  for(int n : ints) {
+    prod *= n;
+  }
+  return make_num(prod);
 }
 
 Sexp *div(Sexp *args)
 {
-  check_arith_usage(__func__, args, 2);
+  check_arith_usage(__func__, args);
   std::vector<int> ints = get_ints(args);
-  if(ints[1] == 0) {
-    reset_repl("division by zero");
+  
+  if(ints.empty()) {
+    reset_repl(std::string{__func__} + std::string{" passed 0 arguments"});
+    exit(1);
+  } else if(ints.size() == 1) {
+    if(ints[0] == 0) {
+      reset_repl("division by 0");
+    }
+    return make_num(1/ints[0]);
+  } else {
+    int d = ints[0];
+    for(ulong i = 1; i < ints.size(); i++) {
+      if(ints[i] == 0) {
+        reset_repl("division by 0");
+      }
+      d /= ints[i];
+    }
+    return make_num(d);
   }
-  return make_num(ints[0]/ints[1]);
 }
