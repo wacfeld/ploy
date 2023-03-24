@@ -31,7 +31,8 @@ std::vector<Token> read_tokens(std::istream &in)
     }
 
     if(depth < 0) {
-      std::cerr << "unmatched closing parenthesis\n";
+      // std::cerr << "unmatched closing parenthesis\n";
+      reset_repl("unmatched closing parenthesis");
     }
 
     toks.push_back(T);
