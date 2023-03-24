@@ -1,1 +1,4 @@
 ploy is based off scheme
+
+#+CAPTION: example of the Y-combinator in action
+[[Y.png]]
