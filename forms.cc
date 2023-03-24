@@ -28,7 +28,7 @@ void check_length(const std::string &f, Sexp *e, int len, bool ge)
   }
 }
 
-Sexp *eval_form(Sexp *e, std::map<std::string,Sexp*> env)
+Sexp *eval_form(Sexp *e, const std::map<std::string,Sexp*> &env)
 {
   std::string &f = e->car->a.symb;
 

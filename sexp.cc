@@ -107,7 +107,7 @@ bool eval_truth(Sexp *e)
 //   return eval(e, {});
 // }
 
-Sexp *eval(Sexp *e, std::map<std::string, Sexp*> env)
+Sexp *eval(Sexp *e, const std::map<std::string, Sexp*> &env)
 {
   // atom
   if(e->atom) {
@@ -121,7 +121,8 @@ Sexp *eval(Sexp *e, std::map<std::string, Sexp*> env)
       std::string &name = e->a.symb;
       // check local env first, then global
       if(env.count(name)) {
-        return env[name];
+        // return env[name];
+        return env.at(name);
       }
       else if(global_env.count(name)) {
         return global_env[name];
@@ -163,7 +164,7 @@ Sexp *eval(Sexp *e, std::map<std::string, Sexp*> env)
 }
 
 // evaluate every element in list and return the new list
-Sexp *eval_list(Sexp *e, std::map<std::string, Sexp*> env)
+Sexp *eval_list(Sexp *e, const std::map<std::string, Sexp*> &env)
 {
   if(e->atom) {
     std::cerr << "eval_list(): asked to evaluate non-list\n";
