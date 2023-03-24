@@ -24,6 +24,49 @@ bool isproc(Sexp *e)
   return e->atom && (e->a.type == PROCEDURE);
 }
 
+// read arguments into env according to formals
+void read_args(std::map<std::string, Sexp*> &env, Sexp *form, Sexp *args)
+{
+  while(1) {
+    // done reading
+    if(isempty(form)) {
+      // make sure no leftover arguments
+      if(!isempty(args)) {
+        reset_repl("too many arguments");
+      }
+      break;
+    }
+
+    // normal argument reading
+    else if(islist(form)) {
+      // make sure car is symbol
+      if(!issymbol(form->car)) {
+        reset_repl("non-symbol formal");
+      }
+      // make sure args still exist
+      if(isempty(args)) {
+        reset_repl("not enough arguments");
+      }
+
+      // write to env
+      std::string &name = form->car->a.symb;
+      env[name] = args->car;
+    }
+
+    // gobble gobble
+    else if(issymbol(form)) {
+      // give rest of args to the symbol
+      std::string &name = form->a.symb;
+      env[name] = args;
+      break;
+    }
+
+    else {
+      reset_repl("invalid formal(s)");
+    }
+  }
+}
+
 // call procedure proc on list of arguments args
 Sexp *call(const Proc &proc, Sexp *args)
 {
@@ -38,6 +81,13 @@ Sexp *call(const Proc &proc, Sexp *args)
     // exit(1);
     // longjmp(repl_start, 1);
 
+    // make copy of environment
+    std::map<std::string, Sexp*> env = proc.env;
     
+    // read args into env
+    read_args(env, proc.formals, args);
+
+    // evaluate body
+    return eval(proc.body, env);
   }
 }
