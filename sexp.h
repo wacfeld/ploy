@@ -40,10 +40,6 @@ public:
 
   Sexp(bool atom): atom{atom}, car{nullptr}, cdr{nullptr} {allocated.push_back(this);}
 
-  ~Sexp() {
-    delete car;
-    delete cdr;
-  }
 };
 
 Sexp *get_sexp(std::vector<Token> toks);
