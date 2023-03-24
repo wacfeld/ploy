@@ -14,6 +14,7 @@ public:
   bool prim;
   Sexp *(*f)(Sexp *);
   std::vector<std::string> formals; // TODO allow other types of formals
+  std::map<std::string, Sexp*> env;
   Sexp *body;
 };
 

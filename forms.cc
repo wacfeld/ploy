@@ -3,7 +3,7 @@
 
 // syntactic forms are quote, if, begin, cond, etc.
 std::set<std::string> forms {
-  "quote", "if", "define",
+  "quote", "if", "define", "lambda",
 };
 
 // true if e is syntactic form
@@ -75,12 +75,13 @@ Sexp *eval_form(Sexp *e, std::map<std::string,Sexp*> env)
         L->a.proc.formals.push_back(f->a.symb);
       }
 
+      L->a.proc.env = env; // copy current local env
       L->a.proc.body = body;
-      return L;
     }
     else {
       reset_repl("non-list formals not supported yet");
     }
+    return L;
   }
 
   else if(f == "quote") {
