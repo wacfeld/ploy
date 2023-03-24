@@ -64,6 +64,10 @@ void read_args(std::map<std::string, Sexp*> &env, Sexp *form, Sexp *args)
     else {
       reset_repl("invalid formal(s)");
     }
+
+    // move it forward
+    args = args->cdr;
+    form = form->cdr;
   }
 }
 
@@ -84,8 +88,10 @@ Sexp *call(const Proc &proc, Sexp *args)
     // make copy of environment
     std::map<std::string, Sexp*> env = proc.env;
     
+    // std::cerr << "reading args\n";
     // read args into env
     read_args(env, proc.formals, args);
+    // std::cerr << "done reading args\n";
 
     // evaluate body
     return eval(proc.body, env);
