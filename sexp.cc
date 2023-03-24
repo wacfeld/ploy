@@ -12,6 +12,7 @@ Sexp *the_empty_list;
 std::vector<Sexp*> allocated;
 void cleanup()
 {
+  std::cerr << "freeing " << allocated.size() << " S-expressions\n";
   for(Sexp *s : allocated) {
     delete s;
   }

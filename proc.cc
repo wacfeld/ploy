@@ -79,9 +79,17 @@ void read_args(std::map<std::string, Sexp*> &env, Sexp *form, Sexp *args)
 // call procedure proc on list of arguments args
 Sexp *call(const Proc &proc, Sexp *args)
 {
+  rec_depth++;
+  if(rec_depth >= max_depth) {
+    std::cerr << "maximum recursion depth " << max_depth << " exceeded" << std::endl;
+    reset_repl();
+  }
+  
   // primitive procedure call
   if(proc.prim) {
-    return (proc.f)(args);
+    Sexp *e = (proc.f)(args);
+    rec_depth--;
+    return e;
   }
 
   // compound procedure call
@@ -99,6 +107,8 @@ Sexp *call(const Proc &proc, Sexp *args)
     // std::cerr << "done reading args\n";
 
     // evaluate body
-    return eval(proc.body, env);
+    Sexp *e = eval(proc.body, env);
+    rec_depth--;
+    return e;
   }
 }

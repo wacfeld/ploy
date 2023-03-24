@@ -7,6 +7,8 @@
 #include "io.h"
 
 jmp_buf repl_start;
+const int max_depth = 1000;
+int rec_depth;
 
 void reset_repl(std::string msg)
 {
@@ -22,6 +24,8 @@ void reset_repl()
 void repl()
 {
   setjmp(repl_start);
+
+  rec_depth = 0;
   
   while(true) {
     std::vector<Token> toks = read_tokens(std::cin);
