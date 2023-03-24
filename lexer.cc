@@ -4,6 +4,8 @@
 #include "io.h"
 #include "defaults.h"
 
+typedef unsigned long ulong;
+
 // read tokens until parentheses are balanced
 std::vector<Token> read_tokens(std::istream &in)
 {
@@ -193,7 +195,7 @@ bool isext(char c)
 int longestident(std::string s)
 {
   bool hasnondigit = false;
-  unsigned long i;
+  ulong i;
   
   for(i = 0; i < s.size(); i++) {
     if(!isdigit(s[i]) && !isalpha(s[i]) && !isext(s[i])) {
@@ -231,7 +233,7 @@ int longestint(std::string s)
     return 0;
   }
   
-  unsigned long i;
+  ulong i;
   for(i = 1; i < s.size(); i++) {
     if(!isdigit(s[i])) {
       break;

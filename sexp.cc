@@ -4,6 +4,8 @@
 #include "defaults.h"
 #include "proc.h"
 
+typedef unsigned long ulong;
+
 // gets initialized in main
 Sexp *the_empty_list;
 
@@ -236,7 +238,7 @@ Sexp *get_sexp(std::vector<Token> toks) {
 bool solitary(std::vector<Token> toks)
 {
   int depth = 0;
-  unsigned long i = 0;
+  ulong i = 0;
   do {
     if(toks[i].type == OPAR)
       depth++;

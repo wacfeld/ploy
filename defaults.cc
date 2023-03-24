@@ -3,6 +3,8 @@
 #include "proc.h"
 #include "forms.h"
 
+typedef unsigned long ulong;
+
 void defaults()
 {
   // bind("length", list_len);
@@ -95,24 +97,6 @@ Sexp *naught(Sexp *args)
   return make_bool(truth);
 }
 
-void check_arith_usage(const std::string &name, Sexp *args, int nargs)
-{
-  check_length(name, args, nargs);
-  while(!isempty(args)) {
-    Sexp *a = args->car;
-    if(!isnum(a)) {
-      std::cerr << "usage: (" << name;
-      for(int i = 0; i < nargs; i++) {
-        std::cerr << " NUM";
-      }
-      std::cerr << ")" << std::endl;
-      reset_repl();
-    }
-    
-    args = args->cdr;
-  }
-}
-
 bool all_nums(Sexp *args)
 {
   if(!islist(args)) {
@@ -130,6 +114,19 @@ bool all_nums(Sexp *args)
   return true;
 }
 
+void check_arith_usage(const std::string &name, Sexp *args)
+{
+  if(!all_nums(args)) {
+    reset_repl(name + std::string{" passed non-numbers"});
+  }
+}
+
+void check_arith_usage(const std::string &name, Sexp *args, int nargs)
+{
+  check_length(name, args, nargs);
+  check_arith_usage(name, args);
+}
+
 std::vector<int> get_ints(Sexp *args)
 {
   std::vector<int> ret;
@@ -145,10 +142,7 @@ std::vector<int> get_ints(Sexp *args)
 // =
 Sexp *num_eq(Sexp *args)
 {
-  // check_arith_usage(__func__, args, 2);
-  if(!all_nums(args)) {
-    reset_repl(std::string{__func__} + std::string{" passed non-numbers"});
-  }
+  check_arith_usage(__func__, args);
   std::vector<int> ints = get_ints(args);
   bool eq = true;
   if(!ints.empty()) {
@@ -164,16 +158,32 @@ Sexp *num_eq(Sexp *args)
 
 Sexp *add(Sexp *args)
 {
-  check_arith_usage(__func__, args, 2);
+  check_arith_usage(__func__, args);
   std::vector<int> ints = get_ints(args);
-  return make_num(ints[0]+ints[1]);
+  int sum = 0;
+  for(int n : ints) {
+    sum += n;
+  }
+  return make_num(sum);
 }
 
 Sexp *sub(Sexp *args)
 {
-  check_arith_usage(__func__, args, 2);
+  check_arith_usage(__func__, args);
   std::vector<int> ints = get_ints(args);
-  return make_num(ints[0]-ints[1]);
+  
+  if(ints.empty()) {
+    reset_repl(std::string{__func__} + std::string{" passed 0 arguments"});
+    exit(1);
+  } else if(ints.size() == 1) {
+    return make_num(-ints[0]);
+  } else {
+    int d = ints[0];
+    for(ulong i = 1; i < ints.size(); i++) {
+      d -= ints[i];
+    }
+    return make_num(d);
+  }
 }
 
 Sexp *mul(Sexp *args)
